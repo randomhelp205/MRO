@@ -1,0 +1,101 @@
+Here's the organized document categorizing all actions from the MRO SageMaker Console Access policy according to the specified ML activities:
+
+---
+
+# MLOps IAM Policies - MRO SageMaker Console Access Categorization
+
+## 1. Access Required AWS Services
+**Permissions to access Amazon S3, Amazon ECR, Amazon CloudWatch, and Amazon EC2**
+
+*Note: This policy focuses primarily on SageMaker console access and doesn't include direct AWS service permissions*
+
+## 2. Run Studio Classic Applications
+**Permissions to operate within a Studio Classic environment**
+
+- `sagemaker:CreatePresignedDomainUrl`
+- `sagemaker:ListDomains`
+- `sagemaker:ListUserProfiles`
+- `sagemaker:ListSpaces`
+- `sagemaker:ListApps`
+- `sagemaker:DescribeDomain`
+- `sagemaker:DescribeUserProfile`
+- `sagemaker:DescribeSpace`
+- `sagemaker:DeleteApp`
+- `sagemaker:DeleteSpace`
+
+## 3. Manage ML Jobs
+**Permissions to audit, query lineage, and visualize experiments**
+
+- `sagemaker:ListTrainingJobs`
+- `sagemaker:ListProcessingJobs`
+- `sagemaker:ListHyperParameterTuningJobs`
+- `sagemaker:ListTrainingJobsForHyperParameterTuningJob`
+- `sagemaker:ListTransformJobs`
+- `sagemaker:ListCompilationJobs`
+- `sagemaker:ListLabelingJobs`
+- `sagemaker:ListAutoMLJobs`
+- `sagemaker:DescribeLabelingJob`
+- `sagemaker:DescribeTrainingJob`
+- `sagemaker:DescribeProcessingJob`
+- `sagemaker:DescribeHyperParameterTuningJob`
+- `sagemaker:DescribeAutoMLJobV2`
+- `sagemaker:DescribeCompilationJob`
+
+## 4. Manage Models
+**Permissions to manage SageMaker AI jobs across their lifecycles**
+
+- `sagemaker:ListModels`
+- `sagemaker:ListModelCards`
+- `sagemaker:ListModelCardVersions`
+- `sagemaker:ListModelCardExportJobs`
+- `sagemaker:DescribeModel*`
+- `sagemaker:DescribeEndpointConfig`
+
+## 5. Manage Pipelines
+**Permissions to manage SageMaker pipelines and pipeline executions**
+
+- `sagemaker:ListPipeline*`
+- `sagemaker:QueryLineage`
+- `sagemaker:Search`
+
+## 6. Search and visualize experiments
+**Permissions to audit, query lineage, and visualize SageMaker AI experiments**
+
+- `sagemaker:ListArtifacts`
+- `sagemaker:ListTags`
+- `sagemaker:ListTags*`
+- `sagemaker:GetSearchSuggestions`
+- `sagemaker:QueryLineage`
+- `sagemaker:Search`
+- `sagemaker:AddTags`
+- `sagemaker:DeleteTags`
+
+## 7. Manage Model Monitoring
+*(Not explicitly covered in this policy)*
+
+## 8. Amazon S3 Full Access
+*(Not explicitly covered in this policy)*
+
+## 9. Amazon S3 Bucket Access
+*(Not explicitly covered in this policy)*
+
+## 10. SageMaker Canvas Core Access
+- `sagemaker:ListCanvasApp` (implied by broad ListApps permission)
+
+## 11. SageMaker Canvas Data Preparation
+*(Not explicitly covered in this policy)*
+
+## 12. SageMaker Canvas MLOps
+*(Endpoint-related permissions would apply but not explicitly called out for Canvas)*
+
+## 13. Use MLflow
+- `sagemaker:ListMlflowTrackingServers`
+
+## 14. Manage MLflow Tracking Servers
+*(Only listing permission - no management actions)*
+
+## 15. Access required to AWS Services for MLflow
+*(Not explicitly covered in this policy)*
+
+## 16. Run Studio EMR Serverless Applications
+*(Not explicitly covered in this policy)*
