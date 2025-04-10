@@ -1,0 +1,188 @@
+## 1. Access Required AWS Services
+**Permissions to access Amazon S3, Amazon ECR, Amazon CloudWatch, and Amazon EC2**
+
+**S3 Actions**:
+- `s3:ListAllMyBuckets`
+- `s3:GetBucket*`
+
+**ECR Actions**:
+- `ec2:CreateNetworkInterface`
+- `ec2:CreateNetworkInterfacePermission`
+- `ec2:DeleteNetworkInterface`
+- `ec2:DeleteNetworkInterfacePermission`
+- `ec2:DescribeNetworkInterfaces`
+- `ec2:DescribeVpcs`
+- `ec2:DescribeDhcpOptions`
+- `ec2:DescribeSubnets`
+- `ec2:DescribeSecurityGroups`
+- `ec2:DescribeVpcEndpoints`
+
+**KMS Actions**:
+- `kms:Decrypt`
+- `kms:GenerateDataKey`
+- `kms:ListAliases`
+
+**IAM Actions**:
+- `iam:ListRoles`
+- `iam:PassRole` (when passed to SageMaker service)
+
+**Secrets Manager Actions**:
+- `secretsmanager:DescribeSecret`
+- `secretsmanager:GetSecretValue`
+- `secretsmanager:UpdateSecret`
+- `secretsmanager:PutSecretValue`
+- `secretsmanager:ListSecretVersionIds`
+- `secretsmanager:ListSecrets`
+
+## 2. Run Studio Classic Applications
+**Permissions to operate within a Studio Classic environment**
+
+- `sagemaker:CreatePresignedDomainUrl`
+- `sagemaker:DescribeDomain`
+- `sagemaker:DescribeUserProfile`
+- `sagemaker:DescribeSpace`
+- `sagemaker:DescribeApp`
+- `sagemaker:CreateApp`
+- `sagemaker:DeleteApp`
+- `sagemaker:CreateSpace`
+- `sagemaker:UpdateSpace`
+- `sagemaker:DeleteSpace`
+
+## 3. Manage ML Jobs
+**Permissions to audit, query lineage, and visualize experiments**
+
+- `sagemaker:CreateLabelingJob`
+- `sagemaker:CreateProcessingJob`
+- `sagemaker:CreateTrainingJob`
+- `sagemaker:CreateHyperParameterTuningJob`
+- `sagemaker:CreateAutoMLJobV2`
+- `sagemaker:DescribeLabelingJob`
+- `sagemaker:StopLabelingJob`
+- `sagemaker:DescribeProcessingJob`
+- `sagemaker:StopProcessingJob`
+- `sagemaker:DescribeTrainingJob`
+- `sagemaker:UpdateTrainingJob`
+- `sagemaker:StopTrainingJob`
+- `sagemaker:DescribeHyperParameterTuningJob`
+- `sagemaker:StopHyperParameterTuningJob`
+- `sagemaker:DeleteHyperParameterTuningJob`
+- `sagemaker:DescribeAutoMLJobV2`
+- `sagemaker:BatchPutMetrics`
+- `sagemaker:BatchGetMetrics`
+
+## 4. Manage Models
+**Permissions to manage SageMaker AI jobs across their lifecycles**
+
+- `sagemaker:CreateModel`
+- `sagemaker:DescribeModel`
+- `sagemaker:DeleteModel`
+- `sagemaker:CreateModelCard`
+- `sagemaker:DescribeModelCard`
+- `sagemaker:DeleteModelCard`
+- `sagemaker:UpdateModelCard`
+- `sagemaker:CreateModelCardExportJob`
+- `sagemaker:CreateEndpointConfig`
+- `sagemaker:DescribeEndpointConfig`
+- `sagemaker:DeleteEndpointConfig`
+
+## 5. Manage Pipelines
+**Permissions to manage SageMaker pipelines and pipeline executions**
+
+- `sagemaker:CreatePipeline`
+- `sagemaker:DescribePipeline*`
+- `sagemaker:RetryPipelineExecution`
+- `sagemaker:SendPipelineExecutionStep*`
+- `sagemaker:SendPipelineExecutionStepFailure`
+- `sagemaker:SendPipelineExecutionStepSuccess`
+- `sagemaker:UpdatePipeline*`
+- `sagemaker:UpdatePipelineExecution`
+- `sagemaker:DeletePipeline`
+- `sagemaker:StartPipelineExecution`
+- `sagemaker:StopPipelineExecution`
+
+## 6. Search and visualize experiments
+**Permissions to audit, query lineage, and visualize SageMaker AI experiments**
+
+- `sagemaker:Search`
+- `sagemaker:CreateExperiment`
+- `sagemaker:DescribeExperiment`
+- `sagemaker:DeleteExperiment`
+- `sagemaker:UpdateExperiment`
+- `sagemaker:CreateTrial`
+- `sagemaker:DescribeTrial`
+- `sagemaker:DeleteTrial`
+- `sagemaker:DescribeTrialComponent`
+- `sagemaker:AssociateTrialComponent`
+- `sagemaker:DisassociateTrialComponent`
+- `sagemaker:AddTags`
+
+## 7. Manage Model Monitoring
+**Permissions to manage monitoring schedules for SageMaker AI Model Monitor**
+
+- `sagemaker:CreateModelBiasJobDefinition`
+- `sagemaker:DescribeModelBiasJobDefinition`
+- `sagemaker:DeleteModelBiasJobDefinition`
+- `sagemaker:CreateDataQualityJobDefinition`
+- `sagemaker:DescribeDataQualityJobDefinition`
+- `sagemaker:DeleteDataQualityJobDefinition`
+- `sagemaker:CreateModelExplainabilityJobDefinition`
+- `sagemaker:DescribeModelExplainabilityJobDefinition`
+- `sagemaker:DeleteModelExplainabilityJobDefinition`
+
+## 8. Amazon S3 Full Access
+**Permissions to perform Amazon S3 operations**
+
+- `s3:ListAllMyBuckets`
+- `s3:GetBucket*`
+
+## 9. Amazon S3 Bucket Access
+**Permissions to perform operations on specified Amazon S3 buckets**
+
+(Included in S3 Full Access above)
+
+## 10. SageMaker Canvas Core Access
+**Basic data prep, model build, validation**
+
+- `sagemaker:ListCanvasApp`
+- `sagemaker:CreateCanvasApp` (with instance type restrictions)
+
+## 11. SageMaker Canvas Data Preparation
+**End-to-end data preparation in SageMaker Canvas**
+
+(Not explicitly covered beyond Canvas app listing/creation)
+
+## 12. SageMaker Canvas MLOps
+**Deploy model to endpoint**
+
+- `sagemaker:CreateEndpointConfig`
+- `sagemaker:DescribeEndpointConfig`
+- `sagemaker:DeleteEndpointConfig`
+
+## 13. Use MLflow
+**Manage experiments, runs, and models in MLflow**
+
+(Listing permissions only - no specific MLflow actions in these policies)
+
+## 14. Manage MLflow Tracking Servers
+**Manage, start, and stop MLflow Tracking Servers**
+
+- `sagemaker:ListMlflowTrackingServers`
+
+## 15. Access required to AWS Services for MLflow
+**Permissions for MLflow Tracking Servers to access S3, Secrets Manager, and Model Registry**
+
+- `secretsmanager:DescribeSecret`
+- `secretsmanager:GetSecretValue`
+- `secretsmanager:UpdateSecret`
+- `secretsmanager:PutSecretValue`
+- `secretsmanager:ListSecretVersionIds`
+- `secretsmanager:ListSecrets`
+
+## 16. Run Studio EMR Serverless Applications
+**Create and Manage EMR Serverless Applications on Amazon SageMaker Studio**
+
+(Not explicitly covered in these policies)
+
+---
+
+**Note**: These additional policies provide more granular control over SageMaker resources with extensive listing permissions and specific creation/deletion capabilities. The policies maintain strong tag-based access control using `ExecutionRole` tags and implement instance type restrictions for app creation. Several activities like EMR Serverless applications and detailed MLflow operations still aren't fully covered.
