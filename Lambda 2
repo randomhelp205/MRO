@@ -1,0 +1,187 @@
+# Terraform Manifest File (`main.tf`)
+
+Here's a complete Terraform manifest file that combines all your resources with some organizational improvements:
+
+```hcl
+# main.tf - Terraform configuration for EventBridge Rule triggering Lambda on CloudTrail CreateArtifact events
+
+# Provider configuration
+provider "aws" {
+  region = "us-east-1" # Change to your preferred region
+}
+
+# Lambda Function Resources
+resource "aws_lambda_function" "my_lambda" {
+  function_name = "my-cloudtrail-artifact-handler"
+  handler       = "index.handler"
+  runtime       = "nodejs18.x"
+  timeout       = 30
+  memory_size   = 128
+  filename      = "path/to/your/lambda.zip"
+  source_code_hash = filebase64sha256("path/to/your/lambda.zip")
+  role          = aws_iam_role.lambda_execution_role.arn
+
+  environment {
+    variables = {
+      # Add any environment variables your Lambda needs
+    }
+  }
+
+  tags = {
+    Name        = "CloudTrail Artifact Handler"
+    Environment = "Production"
+  }
+}
+
+# IAM Resources for Lambda Execution
+resource "aws_iam_role" "lambda_execution_role" {
+  name = "my-lambda-execution-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+        Effect = "Allow"
+      },
+    ]
+  })
+
+  tags = {
+    Service = "Lambda"
+  }
+}
+
+resource "aws_iam_policy" "lambda_execution_policy" {
+  name        = "my-lambda-execution-policy"
+  description = "IAM policy for Lambda execution"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+        ]
+        Resource = "arn:aws:logs:*:*:*"
+        Effect   = "Allow"
+      },
+      # Add any other necessary permissions for your Lambda function here
+      # Example:
+      # {
+      #   Action = [
+      #     "s3:GetObject",
+      #     "s3:PutObject"
+      #   ]
+      #   Resource = "arn:aws:s3:::your-bucket/*"
+      #   Effect = "Allow"
+      # }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
+  role       = aws_iam_role.lambda_execution_role.name
+  policy_arn = aws_iam_policy.lambda_execution_policy.arn
+}
+
+# EventBridge Resources
+resource "aws_cloudwatch_event_rule" "cloudtrail_create_artifact_rule" {
+  name        = "cloudtrail-create-artifact-rule"
+  description = "Triggers on CloudTrail CreateArtifact events"
+  is_enabled  = true
+
+  event_pattern = jsonencode({
+    "source" : ["aws.cloudtrail"],
+    "detail-type" : ["AWS API Call via CloudTrail"],
+    "detail" : {
+      "eventSource" : ["cloudtrail.amazonaws.com"],
+      "eventName" : ["CreateArtifact"]
+    }
+  })
+
+  tags = {
+    Service = "CloudTrail Monitoring"
+  }
+}
+
+resource "aws_cloudwatch_event_target" "lambda_target" {
+  rule      = aws_cloudwatch_event_rule.cloudtrail_create_artifact_rule.name
+  target_id = "lambda-target"
+  arn       = aws_lambda_function.my_lambda.arn
+}
+
+# Lambda Permission for EventBridge
+resource "aws_lambda_permission" "allow_eventbridge" {
+  statement_id  = "AllowEventBridgeInvocation"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.my_lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.cloudtrail_create_artifact_rule.arn
+}
+
+# Outputs
+output "lambda_function_name" {
+  value = aws_lambda_function.my_lambda.function_name
+}
+
+output "lambda_function_arn" {
+  value = aws_lambda_function.my_lambda.arn
+}
+
+output "eventbridge_rule_arn" {
+  value = aws_cloudwatch_event_rule.cloudtrail_create_artifact_rule.arn
+}
+```
+
+## Companion Files
+
+For a complete setup, you should also create these files:
+
+1. **variables.tf** (if you need parameterization):
+```hcl
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  default     = "us-east-1"
+}
+
+variable "lambda_filename" {
+  description = "Path to the Lambda deployment package"
+  default     = "path/to/your/lambda.zip"
+}
+```
+
+2. **outputs.tf** (already included in main.tf above, but can be separated)
+
+3. **terraform.tfvars** (for variable values):
+```hcl
+aws_region     = "us-east-1"
+lambda_filename = "path/to/your/lambda.zip"
+```
+
+## Deployment Instructions
+
+1. Save this configuration in a file named `main.tf`
+2. Initialize Terraform:
+   ```bash
+   terraform init
+   ```
+3. Review the execution plan:
+   ```bash
+   terraform plan
+   ```
+4. Apply the configuration:
+   ```bash
+   terraform apply
+   ```
+
+Remember to:
+- Replace `"path/to/your/lambda.zip"` with the actual path to your Lambda deployment package
+- Add any additional IAM permissions your Lambda function might need
+- Update the AWS region if needed
+- Add any necessary environment variables to the Lambda function
